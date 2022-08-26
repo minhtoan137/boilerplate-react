@@ -3,7 +3,6 @@ import * as z from 'zod';
 
 import { Button } from '@/components/Elements';
 import { Form, FormDrawer, InputField, TextAreaField } from '@/components/Form';
-import { useAuth } from '@/lib/auth';
 
 import { UpdateProfileDTO, useUpdateProfile } from '../api/updateProfile';
 
@@ -15,7 +14,6 @@ const schema = z.object({
 });
 
 export const UpdateProfile = () => {
-  const { user } = useAuth();
   const updateProfileMutation = useUpdateProfile();
 
   return (
@@ -43,14 +41,7 @@ export const UpdateProfile = () => {
         onSubmit={async (values) => {
           await updateProfileMutation.mutateAsync({ data: values });
         }}
-        options={{
-          defaultValues: {
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-            email: user?.email,
-            bio: user?.bio,
-          },
-        }}
+        options={{}}
         schema={schema}
       >
         {({ register, formState }) => (

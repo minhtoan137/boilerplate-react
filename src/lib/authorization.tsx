@@ -1,9 +1,8 @@
 import * as React from 'react';
 
+import { useAuth } from '@/features/auth';
 import { Comment } from '@/features/comments';
 import { User } from '@/features/users';
-
-import { useAuth } from './auth';
 
 export enum ROLES {
   ADMIN = 'ADMIN',
@@ -30,21 +29,22 @@ export const useAuthorization = () => {
   const { user } = useAuth();
 
   if (!user) {
-    throw Error('User does not exist!');
+    console.error('User does not exist!');
+    // throw Error('User does not exist!');
   }
 
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
       if (allowedRoles && allowedRoles.length > 0) {
-        return allowedRoles?.includes(user.role);
+        return allowedRoles?.includes(user?.role);
       }
 
       return true;
     },
-    [user.role]
+    [user?.role]
   );
 
-  return { checkAccess, role: user.role };
+  return { checkAccess, role: user?.role };
 };
 
 type AuthorizationProps = {

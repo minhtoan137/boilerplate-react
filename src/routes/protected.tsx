@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 
 import { Spinner } from '@/components/Elements';
 import { MainLayout } from '@/components/Layout';
@@ -12,6 +12,7 @@ const { DiscussionsRoutes } = lazyImport(
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 const { Profile } = lazyImport(() => import('@/features/users'), 'Profile');
 const { Users } = lazyImport(() => import('@/features/users'), 'Users');
+const { Measuring } = lazyImport(() => import('@/features/measuring'), 'Measuring');
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ export const protectedRoutes = [
       { path: '/discussions/*', element: <DiscussionsRoutes /> },
       { path: '/users', element: <Users /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/measuring', element: <Measuring /> },
       { path: '/', element: <Dashboard /> },
       { path: '*', element: <Navigate to="." /> },
     ],

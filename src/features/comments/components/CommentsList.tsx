@@ -1,8 +1,7 @@
 import { ArchiveIcon } from '@heroicons/react/outline';
 
 import { Spinner, MDPreview } from '@/components/Elements';
-import { User } from '@/features/users';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth';
 import { POLICIES, Authorization } from '@/lib/authorization';
 import { formatDate } from '@/utils/format';
 
@@ -46,7 +45,7 @@ export const CommentsList = ({ discussionId }: CommentsListProps) => {
           key={comment.id || index}
           className="w-full bg-white shadow-sm p-4"
         >
-          <Authorization policyCheck={POLICIES['comment:delete'](user as User, comment)}>
+          <Authorization policyCheck={POLICIES['comment:delete'](user as any, comment)}>
             <div className="flex justify-between">
               <span className="text-xs font-semibold">{formatDate(comment.createdAt)}</span>
               <DeleteComment discussionId={discussionId} id={comment.id} />

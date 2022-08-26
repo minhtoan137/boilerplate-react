@@ -1,17 +1,19 @@
-import { useRoutes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useRoutes } from 'react-router-dom';
 
+import { useMe, UserResponse } from '@/features/auth';
 import { Landing } from '@/features/misc';
-import { useAuth } from '@/lib/auth';
+import { queryClient } from '@/lib/react-query';
 
 import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
 
 export const AppRoutes = () => {
-  const auth = useAuth();
+  const data = useMe({ config: {} });
 
   const commonRoutes = [{ path: '/', element: <Landing /> }];
 
-  const routes = auth.user ? protectedRoutes : publicRoutes;
+  const routes = data.data?.error ? publicRoutes : protectedRoutes;
 
   const element = useRoutes([...routes, ...commonRoutes]);
 

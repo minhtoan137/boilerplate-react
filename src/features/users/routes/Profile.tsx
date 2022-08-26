@@ -1,5 +1,5 @@
 import { ContentLayout } from '@/components/Layout';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth';
 
 import { UpdateProfile } from '../components/UpdateProfile';
 
@@ -35,7 +35,6 @@ export const Profile = () => {
             <Entry label="Last Name" value={user.lastName} />
             <Entry label="Email Address" value={user.email} />
             <Entry label="Role" value={user.role} />
-            <Entry label="Bio" value={user.bio} />
           </dl>
         </div>
       </div>

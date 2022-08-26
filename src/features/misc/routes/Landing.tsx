@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router';
 import logo from '@/assets/logo.svg';
 import { Button } from '@/components/Elements';
 import { Head } from '@/components/Head';
-import { useAuth } from '@/lib/auth';
+import { queryClient } from '@/lib/react-query';
 
 export const Landing = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+
+  const data: any = queryClient.getQueryData('me');
 
   const handleStart = () => {
-    if (user) {
+    if (data?.success) {
       navigate('/app');
     } else {
       navigate('/auth/login');
@@ -23,7 +24,7 @@ export const Landing = () => {
       <div className="bg-white h-[100vh] flex items-center">
         <div className="max-w-7xl mx-auto text-center py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            <span className="block">Bulletproof React</span>
+            <span className="block">Bulletproof React1</span>
           </h2>
           <img src={logo} alt="react" />
           <p>Showcasing Best Practices For Building React Applications</p>

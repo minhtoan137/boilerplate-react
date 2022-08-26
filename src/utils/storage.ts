@@ -1,14 +1,12 @@
-const storagePrefix = 'bulletproof_react_';
+const AUTH_TOKEN = 'authToken'
 
 const storage = {
-  getToken: () => {
-    return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`) as string);
-  },
+  getToken: () => localStorage.getItem(AUTH_TOKEN),
   setToken: (token: string) => {
-    window.localStorage.setItem(`${storagePrefix}token`, JSON.stringify(token));
+    localStorage.setItem(AUTH_TOKEN, token)
   },
   clearToken: () => {
-    window.localStorage.removeItem(`${storagePrefix}token`);
+    window.localStorage.removeItem(AUTH_TOKEN);
   },
 };
 

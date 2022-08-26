@@ -12,7 +12,7 @@ import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import logo from '@/assets/logo.svg';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth';
 import { useAuthorization, ROLES } from '@/lib/authorization';
 
 type SideNavigationItem = {
@@ -75,7 +75,8 @@ const UserNavigation = () => {
       name: 'Sign out',
       to: '',
       onClick: () => {
-        logout();
+        // logout();
+        console.log(logout);
       },
     },
   ].filter(Boolean) as UserNavigationItem[];
