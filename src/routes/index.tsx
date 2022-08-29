@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
-import { useMe, UserResponse } from '@/features/auth';
+import { useGetMe } from '@/features/auth';
 import { Landing } from '@/features/misc';
-import { queryClient } from '@/lib/react-query';
 
 import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
 
 export const AppRoutes = () => {
-  const data = useMe({ config: {} });
+  const data = useGetMe();
 
   const commonRoutes = [{ path: '/', element: <Landing /> }];
 

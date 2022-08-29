@@ -1,31 +1,35 @@
-/* eslint-disable */
-import { queryClient } from '@/lib/react-query';
-import { Button, Drawer, Form, Input, InputNumber, Space, Table } from 'antd';
-import { useState } from 'react';
-import { useCreateMeasuring } from '../api/createMeasuring';
+import { Button, Form, Input, InputNumber } from 'antd';
+import { memo, useEffect, useMemo } from 'react';
 
-import { useMeasuringList } from '../api/getMeasuring';
+type FormMeasuringProps = {
+  data?: any;
+  onFinish: (values: any) => void;
+};
 
-export const FormMeasuring = () => {
-  const { mutate: mutateCreateMeasuring } = useCreateMeasuring({});
-
-  const onFinish = (values: any) => {
-    mutateCreateMeasuring(values, {
-      onSuccess(data, variables, context) {
-        console.log(data, 'data');
-        queryClient.prefetchQuery(['measuringList']);
-      },
-      onError(error, variables, context) {
-        console.error(error, 'error');
-      },
-    });
-  };
+export const FormMeasuring = memo(({ data, onFinish }: FormMeasuringProps) => {
+  const [form] = Form.useForm();
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const INIT_VALUES = {};
+  const INIT_VALUES = useMemo(
+    () => ({
+      key: data?.data?.data?.key,
+      name: data?.data?.data?.name,
+      numericalOrder: data?.data?.data?.numericalOrder,
+      unit: data?.data?.data?.unit,
+    }),
+    [data]
+  );
+
+  useEffect(() => {
+    form.setFieldsValue(INIT_VALUES);
+
+    return () => {
+      form.resetFields();
+    };
+  }, [form, INIT_VALUES]);
 
   return (
     <Form
@@ -36,6 +40,7 @@ export const FormMeasuring = () => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
+      form={form}
     >
       <Form.Item
         label="Code"
@@ -72,4 +77,6 @@ export const FormMeasuring = () => {
       </Form.Item>
     </Form>
   );
-};
+});
+
+FormMeasuring.displayName = 'FormMeasuring';

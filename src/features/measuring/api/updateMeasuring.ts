@@ -6,32 +6,36 @@ import { useNotificationStore } from '@/stores/notifications';
 
 import { MeasuringInput, MeasuringResponse } from '../types';
 
-export const createMeasuring = (params: MeasuringInput): Promise<MeasuringResponse> => {
-  return axios.post(`/measuring`, params);
+type MeasuringUpdateInput = {
+  _id: string
+  params: MeasuringInput
+}
+
+export const updateMeasuring = ({ _id, params }: MeasuringUpdateInput): Promise<MeasuringResponse> => {
+  return axios.put(`/measuring/${_id}`, params);
 };
 
-type UseCreateMeasuringOptions = {
-  config?: MutationConfig<typeof createMeasuring>;
+type UseUpdateMeasuringOptions = {
+  config?: MutationConfig<typeof updateMeasuring>;
 };
 
-export const useCreateMeasuring = ({ config }: UseCreateMeasuringOptions = {}) => {
+export const useUpdateMeasuring = ({ config }: UseUpdateMeasuringOptions = {}) => {
   const { addNotification } = useNotificationStore();
 
   return useMutation({
-    mutationFn: createMeasuring,
-    onSuccess: async ({ success, error, message, data, pagination }) => {
+    onSuccess: async ({ success, error, message, data }) => {
       if (success) {
+        queryClient.refetchQueries(['measuring', data?._id])
         queryClient.refetchQueries(['measuringList'], { stale: true })
-
         addNotification({
           type: 'success',
-          title: 'Create Success',
+          title: 'Update Success',
         });
       }
       if (error) {
         addNotification({
           type: 'error',
-          title: 'Create Failed',
+          title: 'Update Failed',
           message
         });
       }
@@ -40,5 +44,6 @@ export const useCreateMeasuring = ({ config }: UseCreateMeasuringOptions = {}) =
       console.log(err, variables, context, 'onError login')
     },
     ...config,
+    mutationFn: updateMeasuring,
   });
 };

@@ -1,19 +1,19 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
-  UserIcon,
   FolderIcon,
   HomeIcon,
   MenuAlt2Icon,
+  UserIcon,
   UsersIcon,
   XIcon,
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import * as React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import logo from '@/assets/logo.svg';
-import { useAuth } from '@/features/auth';
-import { useAuthorization, ROLES } from '@/lib/authorization';
+import { useGetMe, useLogout } from '@/features/auth';
+import { ROLES, useAuthorization } from '@/lib/authorization';
 
 type SideNavigationItem = {
   name: string;
@@ -67,7 +67,9 @@ type UserNavigationItem = {
 };
 
 const UserNavigation = () => {
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const data = useGetMe();
+  const logoutMutation = useLogout();
 
   const userNavigation = [
     { name: 'Your Profile', to: './profile' },
@@ -75,8 +77,12 @@ const UserNavigation = () => {
       name: 'Sign out',
       to: '',
       onClick: () => {
-        // logout();
-        console.log(logout);
+        const userId = data?.data?.data?._id || '';
+        logoutMutation.mutate(userId, {
+          onSuccess: () => {
+            navigate('/');
+          },
+        });
       },
     },
   ].filter(Boolean) as UserNavigationItem[];

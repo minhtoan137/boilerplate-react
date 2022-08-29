@@ -5,7 +5,6 @@ import storage from '@/utils/storage';
 
 import { getMe } from '../api/getMe';
 import { loginAPI } from '../api/login';
-import { logoutAPI } from '../api/logout';
 import { AuthUser, LoginValues, UserResponse } from '../types';
 
 // interface LoginResponseError {
@@ -38,7 +37,7 @@ export const useAuth = create<AuthStore>(
         return response;
       },
       logout: async (userId: string) => {
-        await logoutAPI(userId);
+        // await logoutAPI(userId);
         storage.clearToken();
         window.location.assign(window.location.origin as unknown as string);
       },

@@ -12,11 +12,11 @@ export const getMe = (): Promise<UserResponse> => {
 
 type QueryFnType = typeof getMe;
 
-type UseMeOptions = {
+type UseGetMeOptions = {
   config?: QueryConfig<QueryFnType>;
 };
 
-export const useMe = ({ config }: UseMeOptions) => {
+export const useGetMe = ({ config }: UseGetMeOptions = {}) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     queryKey: ['me'],
     queryFn: () => getMe(),

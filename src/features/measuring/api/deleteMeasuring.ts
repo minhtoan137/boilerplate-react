@@ -4,34 +4,33 @@ import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { useNotificationStore } from '@/stores/notifications';
 
-import { MeasuringInput, MeasuringResponse } from '../types';
+import { MeasuringResponse } from '../types';
 
-export const createMeasuring = (params: MeasuringInput): Promise<MeasuringResponse> => {
-  return axios.post(`/measuring`, params);
+export const deleteMeasuring = (_id: string): Promise<MeasuringResponse> => {
+  return axios.delete(`/measuring/${_id}`);
 };
 
-type UseCreateMeasuringOptions = {
-  config?: MutationConfig<typeof createMeasuring>;
+type UseDeleteMeasuringOptions = {
+  config?: MutationConfig<typeof deleteMeasuring>;
 };
 
-export const useCreateMeasuring = ({ config }: UseCreateMeasuringOptions = {}) => {
+export const useDeleteMeasuring = ({ config }: UseDeleteMeasuringOptions = {}) => {
   const { addNotification } = useNotificationStore();
 
   return useMutation({
-    mutationFn: createMeasuring,
-    onSuccess: async ({ success, error, message, data, pagination }) => {
+    mutationFn: deleteMeasuring,
+    onSuccess: async ({ success, error, message, data }) => {
+      queryClient.refetchQueries(['measuringList'], { stale: true })
       if (success) {
-        queryClient.refetchQueries(['measuringList'], { stale: true })
-
         addNotification({
           type: 'success',
-          title: 'Create Success',
+          title: 'Delete Success',
         });
       }
       if (error) {
         addNotification({
           type: 'error',
-          title: 'Create Failed',
+          title: 'Delete Failed',
           message
         });
       }

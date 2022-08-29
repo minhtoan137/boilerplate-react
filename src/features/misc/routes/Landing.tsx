@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router';
 import logo from '@/assets/logo.svg';
 import { Button } from '@/components/Elements';
 import { Head } from '@/components/Head';
-import { useMe } from '@/features/auth';
+import { useGetMe } from '@/features/auth';
 
 export const Landing = () => {
   const navigate = useNavigate();
 
-  const data = useMe({});
-  console.log(data, '---');
+  const data = useGetMe();
 
   const handleStart = () => {
     if (data?.data?.data) {

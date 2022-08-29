@@ -69,6 +69,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': ['off'],
 
         'prettier/prettier': 0,
+        'react/display-name': 'off',
       },
     },
   ],
